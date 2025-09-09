@@ -1,0 +1,909 @@
+<div
+  class="flex h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-gray-100 transition-all duration-300"
+>
+  <!-- Sidebar / Settings Panel (slide in from left) -->
+  <div
+    class="fixed inset-y-0 left-0 w-80 bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-50 shadow-xl border-r border-gray-200/50 dark:border-gray-700/50 overflow-y-auto"
+    [ngClass]="showSettings ? 'translate-x-0' : '-translate-x-full'"
+  >
+    <div
+      class="p-6 border-b border-gray-200/50 dark:border-gray-700/50 flex justify-between items-center"
+    >
+      <h2
+        class="text-xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent"
+      >
+        Settings
+      </h2>
+      <button
+        (click)="toggleSettings()"
+        class="p-2 rounded-full hover:bg-gray-200/70 dark:hover:bg-gray-700/70 transition-colors duration-200"
+        aria-label="Close settings"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="p-6 space-y-6">
+      <!-- Display settings -->
+      <div class="space-y-4">
+        <h3
+          class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium"
+        >
+          Display
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <label
+              for="dark-mode"
+              class="flex items-center space-x-3 cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-gray-600 dark:text-gray-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                ></path>
+              </svg>
+              <span>Dark mode</span>
+            </label>
+            <button
+              id="dark-mode"
+              (click)="toggleDarkMode()"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none"
+              [ngClass]="
+                darkMode ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
+              "
+              role="switch"
+              [attr.aria-checked]="darkMode"
+            >
+              <span class="sr-only">Toggle dark mode</span>
+              <span
+                class="inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+                [ngClass]="darkMode ? 'translate-x-6' : 'translate-x-1'"
+              >
+              </span>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label
+              for="token-info"
+              class="flex items-center space-x-3 cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-gray-600 dark:text-gray-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>Show token info</span>
+            </label>
+            <button
+              id="token-info"
+              (click)="toggleTokenInfo()"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none"
+              [ngClass]="
+                showTokenInfo
+                  ? 'bg-primary-600'
+                  : 'bg-gray-200 dark:bg-gray-700'
+              "
+              role="switch"
+              [attr.aria-checked]="showTokenInfo"
+            >
+              <span class="sr-only">Toggle token info</span>
+              <span
+                class="inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+                [ngClass]="showTokenInfo ? 'translate-x-6' : 'translate-x-1'"
+              >
+              </span>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label
+              for="streaming"
+              class="flex items-center space-x-3 cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-gray-600 dark:text-gray-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+              </svg>
+              <span>Streaming responses</span>
+            </label>
+            <button
+              id="streaming"
+              (click)="toggleStreaming()"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none"
+              [ngClass]="
+                isStreaming ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700'
+              "
+              role="switch"
+              [attr.aria-checked]="isStreaming"
+            >
+              <span class="sr-only">Toggle streaming</span>
+              <span
+                class="inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"
+                [ngClass]="isStreaming ? 'translate-x-6' : 'translate-x-1'"
+              >
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Token usage -->
+      <div class="space-y-4">
+        <h3
+          class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium"
+        >
+          Token Usage
+        </h3>
+        <div
+          class="bg-gray-100/70 dark:bg-gray-700/70 p-4 rounded-xl backdrop-blur-sm"
+        >
+          <div class="flex justify-between mb-2">
+            <span class="text-gray-600 dark:text-gray-300"
+              >Total tokens used:</span
+            >
+            <span class="font-medium">{{ tokenUsage }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600 dark:text-gray-300"
+              >Estimated cost:</span
+            >
+            <span class="font-medium text-secondary-600 dark:text-secondary-400"
+              >${{ estimatedCost.toFixed(6) }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Storage usage -->
+      <div class="space-y-4">
+        <h3
+          class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium"
+        >
+          Storage Usage
+        </h3>
+        <div
+          class="bg-gray-100/70 dark:bg-gray-700/70 p-4 rounded-xl backdrop-blur-sm"
+        >
+          <div class="flex justify-between mb-2">
+            <span class="text-gray-600 dark:text-gray-300">Used:</span>
+            <span
+              >{{ getStorageUsage().used }} KB /
+              {{ getStorageUsage().total }} KB</span
+            >
+          </div>
+          <div
+            class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-1 overflow-hidden"
+          >
+            <div
+              class="h-full rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 transition-all duration-500 ease-out"
+              [style.width.%]="getStorageUsage().percentage"
+            ></div>
+          </div>
+          <div class="text-right text-xs text-gray-500 dark:text-gray-400">
+            {{ getStorageUsage().percentage }}%
+          </div>
+        </div>
+      </div>
+
+      <!-- Import/Export -->
+      <div class="space-y-4">
+        <h3
+          class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium"
+        >
+          Import/Export
+        </h3>
+        <div class="flex flex-col space-y-3">
+          <button
+            (click)="exportConversation()"
+            class="w-full py-2.5 px-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-lg shadow-sm hover:shadow transition-all duration-200 font-medium flex items-center justify-center space-x-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Export Conversation</span>
+          </button>
+
+          <label
+            class="w-full py-2.5 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-center rounded-lg cursor-pointer transition-all duration-200 font-medium flex items-center justify-center space-x-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>Import Conversation</span>
+            <input
+              type="file"
+              accept=".json"
+              class="hidden"
+              (change)="importConversation($event)"
+            />
+          </label>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="space-y-4">
+        <h3
+          class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium"
+        >
+          Actions
+        </h3>
+        <div class="flex flex-col space-y-3">
+          <button
+            (click)="clearChat(); toggleSettings()"
+            class="w-full py-2.5 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              ></path>
+            </svg>
+            <span>Clear Conversation</span>
+          </button>
+
+          <button
+            (click)="newConversation(); toggleSettings()"
+            class="w-full py-2.5 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+              ></path>
+            </svg>
+            <span>New Conversation</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- About -->
+      <div class="space-y-4">
+        <h3
+          class="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium"
+        >
+          About
+        </h3>
+        <div
+          class="bg-gray-100/70 dark:bg-gray-700/70 p-4 rounded-xl backdrop-blur-sm"
+        >
+          <div class="flex items-center space-x-2 mb-2">
+            <span
+              class="font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent"
+              >AI Chat App</span
+            >
+            <span
+              class="px-2 py-0.5 text-xs bg-gray-200 dark:bg-gray-600 rounded-full"
+              >v1.0.0</span
+            >
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+            A lightweight Angular application for interacting with AI models.
+          </p>
+          <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Model:</span>
+            <span class="text-sm font-medium">{{ currentModel }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="flex flex-col w-full h-full">
+    <!-- Header with glass morphism effect -->
+    <header
+      class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-10 transition-all duration-300 shadow-sm"
+    >
+      <div
+        class="container mx-auto px-4 py-3 flex items-center justify-between"
+      >
+        <!-- Logo and app title -->
+        <div class="flex items-center space-x-3">
+          <button
+            (click)="toggleSettings()"
+            class="p-2 rounded-lg hover:bg-gray-200/70 dark:hover:bg-gray-700/70 text-gray-700 dark:text-gray-300 transition-colors duration-200"
+            aria-label="Settings"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <h1
+            class="text-xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent"
+          >
+            AI Chat App
+          </h1>
+
+          <div
+            class="px-2.5 py-1 text-xs bg-gradient-to-r from-primary-100 to-secondary-100 dark:from-primary-900/40 dark:to-secondary-900/40 text-primary-800 dark:text-primary-200 rounded-full font-medium hidden sm:block"
+          >
+            {{ currentModel }}
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex items-center space-x-1">
+          <button
+            (click)="clearChat()"
+            class="p-2 rounded-lg hover:bg-gray-200/70 dark:hover:bg-gray-700/70 text-gray-700 dark:text-gray-300 transition-colors duration-200 relative group"
+            aria-label="Clear chat history"
+            title="Clear chat history"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              ></path>
+            </svg>
+            <span
+              class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            ></span>
+          </button>
+
+          <button
+            (click)="newConversation()"
+            class="p-2 rounded-lg hover:bg-gray-200/70 dark:hover:bg-gray-700/70 text-gray-700 dark:text-gray-300 transition-colors duration-200 relative group"
+            aria-label="New conversation"
+            title="New conversation"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
+              <line x1="12" y1="11" x2="12" y2="17"></line>
+              <line x1="9" y1="14" x2="15" y2="14"></line>
+            </svg>
+            <span
+              class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            ></span>
+          </button>
+
+          <button
+            (click)="toggleDarkMode()"
+            class="p-2 rounded-lg hover:bg-gray-200/70 dark:hover:bg-gray-700/70 text-gray-700 dark:text-gray-300 transition-colors duration-200 relative group"
+            aria-label="Toggle dark mode"
+            [title]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+          >
+            <svg
+              *ngIf="!darkMode"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg
+              *ngIf="darkMode"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <span
+              class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Messages container -->
+    <div
+      #messageContainer
+      class="flex-1 overflow-y-auto py-6 px-4 md:px-8 space-y-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950"
+      (scroll)="onScroll($event)"
+      role="log"
+      aria-live="polite"
+      aria-label="Chat messages"
+    >
+      <!-- Date separator -->
+      <ng-container *ngIf="messages.length > 0">
+        <div class="flex justify-center my-6">
+          <div
+            class="px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-full shadow-sm"
+          >
+            {{
+              isToday(messages[0].timestamp)
+                ? "Today"
+                : formatDate(messages[0].timestamp)
+            }}
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Messages -->
+      <ng-container
+        *ngFor="let message of messages; let i = index; trackBy: trackById"
+      >
+        <!-- Date separator for new days -->
+        <div
+          *ngIf="
+            i > 0 &&
+            !isToday(message.timestamp) &&
+            isToday(messages[i - 1].timestamp)
+          "
+          class="flex justify-center my-6"
+        >
+          <div
+            class="px-4 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-full shadow-sm"
+          >
+            {{ formatDate(message.timestamp) }}
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div
+          [ngClass]="getMessageContainerClasses(message)"
+          class="animate-fade-in"
+        >
+          <!-- User message -->
+          <div
+            *ngIf="message.sender === MessageSender.USER"
+            class="relative group max-w-[85%] md:max-w-[75%] bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-2xl rounded-tr-sm px-5 py-3.5 shadow-md hover:shadow-lg transition-all duration-200"
+          >
+            <!-- Message content -->
+            <div class="whitespace-pre-wrap break-words">
+              {{ message.content }}
+            </div>
+
+            <!-- Message timestamp -->
+            <div
+              class="text-xs text-white/70 mt-1.5 flex items-center justify-end space-x-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>{{ formatTime(message.timestamp) }}</span>
+            </div>
+
+            <!-- Message actions -->
+            <div
+              class="absolute top-2 left-0 transform -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-1 pl-2"
+            >
+              <button
+                (click)="copyToClipboard(message)"
+                class="p-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors duration-200"
+                aria-label="Copy message"
+                title="Copy to clipboard"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- AI message -->
+          <div
+            *ngIf="message.sender === MessageSender.AI"
+            class="relative group max-w-[85%] md:max-w-[75%] bg-white dark:bg-gray-800 rounded-2xl rounded-tl-sm px-5 py-3.5 shadow-md hover:shadow-lg transition-all duration-200 border border-gray-100 dark:border-gray-700"
+          >
+            <!-- Message content -->
+            <div class="whitespace-pre-wrap break-words">
+              {{ message.content }}
+            </div>
+
+            <!-- Message timestamp -->
+            <div
+              class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 flex items-center justify-start space-x-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>{{ formatTime(message.timestamp) }}</span>
+            </div>
+
+            <!-- Token info for AI messages -->
+            <div
+              *ngIf="message.metadata?.totalTokens && showTokenInfo"
+              class="mt-1.5 text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+                <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+                <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+              </svg>
+              <span
+                >{{ message.metadata?.totalTokens }} tokens |
+                {{ message.metadata?.processingTime }}ms</span
+              >
+            </div>
+
+            <!-- Message actions -->
+            <div
+              class="absolute top-2 right-0 transform translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-1 pr-2"
+            >
+              <button
+                (click)="copyToClipboard(message)"
+                class="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                aria-label="Copy message"
+                title="Copy to clipboard"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- System message -->
+          <div
+            *ngIf="message.sender === MessageSender.SYSTEM"
+            [ngClass]="
+              message.isError
+                ? 'bg-accent-100 dark:bg-accent-900/30 text-accent-800 dark:text-accent-200'
+                : 'bg-gray-100 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300'
+            "
+            class="max-w-md mx-auto px-4 py-2.5 rounded-lg text-sm italic text-center shadow-sm"
+          >
+            {{ message.content }}
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Scroll to bottom button (visible when not auto-scrolling) -->
+      <button
+        *ngIf="!autoScroll && messages.length > 5"
+        (click)="scrollToBottom(); autoScroll = true"
+        class="fixed bottom-28 right-6 p-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+        aria-label="Scroll to bottom"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div
+      *ngIf="isLoading"
+      class="flex items-center justify-center py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200/50 dark:border-gray-700/50"
+    >
+      <div class="flex items-center space-x-3">
+        <div class="relative w-5 h-5">
+          <div
+            class="absolute top-0 left-0 w-full h-full border-2 border-primary-500 border-t-transparent rounded-full animate-spin"
+          ></div>
+        </div>
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{
+          loadingMessage
+        }}</span>
+      </div>
+    </div>
+
+    <!-- Input form -->
+    <div
+      class="p-4 md:p-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-t border-gray-200/50 dark:border-gray-700/50 transition-all duration-300"
+    >
+      <form
+        [formGroup]="messageForm"
+        (ngSubmit)="sendMessage()"
+        class="flex flex-col space-y-3"
+      >
+        <div class="relative">
+          <textarea
+            #messageInput
+            formControlName="message"
+            class="w-full p-4 pr-24 border-0 rounded-xl bg-gray-100/70 dark:bg-gray-700/70 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:bg-white dark:focus:bg-gray-700 dark:text-gray-100 resize-none shadow-inner transition-all duration-200"
+            placeholder="Type your message..."
+            rows="2"
+            (keydown)="onKeyDown($event)"
+            aria-label="Message input"
+            [disabled]="isLoading"
+          ></textarea>
+
+          <!-- Character counter -->
+          <div
+            class="absolute bottom-3 right-20 text-xs text-gray-500 dark:text-gray-400 font-medium"
+          >
+            {{ getRemainingCharacters() }}
+          </div>
+
+          <!-- Send button -->
+          <button
+            type="submit"
+            class="absolute bottom-2.5 right-2.5 p-2.5 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-lg shadow-sm hover:shadow transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100"
+            [disabled]="!isMessageValid() || isLoading"
+            aria-label="Send message"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Input controls -->
+        <div
+          class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 px-1"
+        >
+          <div class="hidden sm:flex items-center space-x-1">
+            <span>Press</span>
+            <kbd
+              class="px-1.5 py-0.5 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 shadow-sm font-sans font-medium"
+              >Enter</kbd
+            >
+            <span>to send,</span>
+            <kbd
+              class="px-1.5 py-0.5 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 shadow-sm font-sans font-medium"
+              >Shift+Enter</kbd
+            >
+            <span>for new line</span>
+          </div>
+          <div class="flex space-x-4">
+            <button
+              type="button"
+              (click)="toggleStreaming()"
+              class="flex items-center space-x-1.5 hover:text-primary-500 transition-colors duration-200"
+              [class.text-primary-500]="isStreaming"
+              aria-label="Toggle streaming mode"
+              [attr.aria-pressed]="isStreaming"
+              title="Toggle streaming mode"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+              </svg>
+              <span>Stream</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="toggleTokenInfo()"
+              class="flex items-center space-x-1.5 hover:text-primary-500 transition-colors duration-200"
+              [class.text-primary-500]="showTokenInfo"
+              aria-label="Toggle token info"
+              [attr.aria-pressed]="showTokenInfo"
+              title="Toggle token info"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>Tokens</span>
+            </button>
+
+            <button
+              type="button"
+              (click)="retryLastMessage()"
+              class="flex items-center space-x-1.5 hover:text-primary-500 transition-colors duration-200"
+              aria-label="Retry last message"
+              title="Retry last message"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"></path>
+              </svg>
+              <span>Retry</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
