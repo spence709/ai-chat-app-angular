@@ -41,7 +41,7 @@ Bonus:
 
 ```bash
 # 1. clone repository
-git clone https://github.com/your-username/ai-chat-app.git
+git clone https://github.com/spence709/ai-chat-app.git
 cd ai-chat-app
 
 # 2. install dependencies
