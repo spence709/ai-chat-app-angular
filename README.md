@@ -16,7 +16,7 @@ Built for speed, extendability and developer friendliness.
 - Import / Export conversations (JSON)
 - Fully responsive mobile-first layout powered by TailwindCSS
 - Robust error & loading states, retry last message
-- Configurable OpenAI model (defaults to `gpt-4`)
+- Configurable OpenAI model (defaults to `gpt-3.5-turbo`)
 
 Bonus:
 
@@ -63,11 +63,11 @@ The project uses **Angular environments** (`src/environments/*`) plus runtime en
 
 ### Key Parameters
 
-| Variable         | Description                                                                        | Example  |
-| ---------------- | ---------------------------------------------------------------------------------- | -------- |
-| `OPENAI_API_KEY` | **Required.** Your secret key from <https://platform.openai.com/account/api-keys>. | `sk-…`   |
-| `OPENAI_MODEL`   | Default model.                                                                     | `gpt-4o` |
-| `OPENAI_TIMEOUT` | Request timeout (ms).                                                              | `60000`  |
+| Variable  | Description                                                                        | Example         |
+| --------- | ---------------------------------------------------------------------------------- | --------------- |
+| `apiKey`  | **Required.** Your secret key from <https://platform.openai.com/account/api-keys>. | `sk-…`          |
+| `model`   | Default model.                                                                     | `gpt-3.5-turbo` |
+| `timeout` | Request timeout (ms).                                                              | `timeout`       |
 
 ---
 
@@ -113,7 +113,7 @@ src/
 | Issue                                             | Fix                                                       |
 | ------------------------------------------------- | --------------------------------------------------------- |
 | **Blank page / 404** after refresh on static host | Ensure server redirects all routes to `index.html`        |
-| `401 Unauthorized` from OpenAI                    | Verify `OPENAI_API_KEY` and that billing is enabled       |
+| `401 Unauthorized` from OpenAI                    | Verify `apiKey` and that billing is enabled               |
 | `429 Too Many Requests`                           | Hit rate-limit – reduce message frequency or upgrade plan |
 | LocalStorage quota exceeded                       | Clear old conversations from settings › Storage Usage     |
 | CORS errors in production                         | Serve requests through your own proxy/server              |
