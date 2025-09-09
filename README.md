@@ -3,8 +3,6 @@
 A lightweight, **Angular + TailwindCSS** web application that lets you chat with OpenAI models through a clean, responsive UI.  
 Built for speed, extendability and developer friendliness.
 
-![AI Chat App UI](./docs/screenshot-main.png)
-
 ---
 
 ## ✨ Features
