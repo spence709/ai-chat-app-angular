@@ -63,17 +63,6 @@ The app is now available on <http://localhost:4200> and will reload on file chan
 
 The project uses **Angular environments** (`src/environments/*`) plus runtime environment variables for secrets.
 
-### Quick local setup
-
-1. Copy `.env.example` ➜ `.env`
-2. Fill in your OpenAI key:
-   ```
-   OPENAI_API_KEY=sk-********************************
-   ```
-
-During `ng serve` the key is injected via **dotenv** & dev server proxy.  
-For production you should **never** hard-code keys: use platform-specific environment variables or a minimal back-end proxy.
-
 ### Key Parameters
 
 | Variable         | Description                                                                        | Example  |
@@ -121,28 +110,6 @@ src/
 
 ---
 
-## ☁️ Deployment Guide
-
-The build output is **static HTML/CSS/JS**, so you can host it anywhere:
-
-### Static Hosts
-
-1. `npm run build`
-2. Upload `dist/ai-chat-app/` to **Vercel**, **Netlify**, **GitHub Pages**, **Cloudflare Pages**, S3 + CloudFront, etc.
-3. Configure `OPENAI_API_KEY` as an **environment variable** in the host dashboard (if supported) or via an edge-function proxy.
-
-### Docker
-
-```dockerfile
-FROM nginx:alpine
-COPY dist/ai-chat-app /usr/share/nginx/html
-# optionally copy custom nginx.conf to inject env vars at runtime
-```
-
-`docker build -t ai-chat-app . && docker run -p 8080:80 ai-chat-app`
-
----
-
 ## 🛠️ Troubleshooting
 
 | Issue                                             | Fix                                                       |
@@ -154,31 +121,3 @@ COPY dist/ai-chat-app /usr/share/nginx/html
 | CORS errors in production                         | Serve requests through your own proxy/server              |
 
 ---
-
-## 🤝 Contributing
-
-1. Fork the repo & create a feature branch:  
-   `git checkout -b feat/amazing-idea`
-2. Commit with **conventional commits**:  
-   `feat(ui): add rainbow mode`
-3. Lint & test: `npm run lint && npm test`
-4. Push and open a Pull Request explaining **what** and **why**
-
-All contributions, issues and feature requests are welcome!  
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full details.
-
----
-
-## 🗺️ Roadmap
-
-- Multi-provider backend (HuggingFace, local LLMs)
-- Conversation search & tags
-- PWA offline support
-- Theme & plugin system
-- End-to-end Cypress tests
-
----
-
-## 📜 License
-
-[MIT](LICENSE) © 2025 AI Chat App Contributors
